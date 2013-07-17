@@ -106,6 +106,7 @@
                             nomeClasse = $("#nomeClasse").val();
                             moderador = $("#moderadorClase").val();
                             tabela = $("#tabela").val();
+                            
                             if (nomeClasse == "") {
                                 alert("Preencha o nome da classe.");
                                 return;
