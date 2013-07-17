@@ -38,7 +38,7 @@
                     <label for="tabela">Tabela:</label>
                     <input id="tabela" name="tabela">
                     <br>
-                    <input type="button" id="gravarTela" name="gravarTela" value="Gravar Tela" onclick="gravarTela();">
+                    <input type="button" id="gravarTela" name="gravarTela" value="Gravar Tela" onclick="enviaTela();">
                 </fieldset>
             </div>
             <div>
@@ -101,7 +101,7 @@
     <script src="js/jquery.js"></script>
     <script type="text/javascript">
 
-                        function gravarTela() {
+                        function enviaTela() {
                             var nomeClasse, moderador, tabela;
                             nomeClasse = $("#nomeClasse").val();
                             moderador = $("#moderadorClase").val();
