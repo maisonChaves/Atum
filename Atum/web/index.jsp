@@ -46,10 +46,6 @@
                     <legend>Cadastro de Atributos</legend>
                     <label for="nomeAtributo">Nome:</label>
                     <input type="text" id="nomeAtributo" name="nomeAtributo">
-                    <label for="get">Get</label>
-                    <input type="checkbox" id="get" name="getSet" value="get">
-                    <label for="set">Set</label>
-                    <input type="checkbox" id="set" name="getSet" value="set">
                     <br><br>
                     <label for="moderadorAtributo">Moderador:</label>
                     <select id="moderadorAtributo" name="moderadorAtributo">
@@ -125,10 +121,8 @@
                             });
                         }
                         function adcionarAtributos() {
-                            var nome, get, set, moderador, tipo, caracteristica, id;
+                            var nome, moderador, tipo, caracteristica, id;
                             nome = $("#nomeAtributo").val();
-                            get = $("#get").val();
-                            set = $("#set").val();
                             moderador = $("#moderadorAtributo").val();
                             tipo = $("#tipoAtributo").val();
                             caracteristica = $("#caracteristica").val();
@@ -144,8 +138,6 @@
                                 dataType: "json",
                                 success: function() {
                                     $("#nomeAtributo").val("");
-                                    $('#get').removeAttr('checked');
-                                    $('#set').removeAttr('checked');
                                 }
                             });
                         }
@@ -161,10 +153,8 @@
                         }
 
                         function geraJsonAtributos() {
-                            var nome, get, set, moderador, tipo, caracteristica, id;
+                            var nome, moderador, tipo, caracteristica, id;
                             nome = $("#nomeAtributo").val();
-                            get = $("#get").val();
-                            set = $("#set").val();
                             moderador = $("#moderadorAtributo").val();
                             tipo = $("#tipoAtributo").val();
                             caracteristica = $("#caracteristica").val();
@@ -172,8 +162,6 @@
                             var json = "[";
                             json += '{"idClasse":"' + id + '",';
                             json += '"nomeAtributo":"' + nome + '",';
-                            json += '"get":"' + get + '",';
-                            json += '"set":"' + set + '",';
                             json += '"moderador":"' + moderador + '",';
                             json += '"tipo":"' + tipo + '",';
                             json += '"caracteristica":"' + caracteristica + '"}';
