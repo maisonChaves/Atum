@@ -109,19 +109,15 @@ public class ServletCadastroTela extends HttpServlet {
         PrintWriter out = response.getWriter();
         JSONArray array = (JSONArray) obj;
         Session session = Conexao.getConexao();
-        Moderador moderador = new Moderador();
-        Tipo tipo = new Tipo();
-        Caracteristica caracteristica = new Caracteristica();
-        Classe classe = new Classe();
         DAO dao = new DAO(session);
         JSONObject retorno = new JSONObject();
         Atributos atributos = new Atributos();
         for (Object item : array) {
             Map<String, String> mapaClasse = (Map) item;
-            classe = (Classe) dao.busca(Classe.class, Integer.parseInt(mapaClasse.get("idClasse")));
-            moderador = (Moderador) dao.busca(Moderador.class, Integer.parseInt(mapaClasse.get("moderador")));
-            tipo = (Tipo) dao.busca(Tipo.class, Integer.parseInt(mapaClasse.get("tipo")));
-            caracteristica = (Caracteristica) dao.busca(Caracteristica.class, Integer.parseInt(mapaClasse.get("caracteristica")));
+            Classe classe = (Classe) dao.busca(Classe.class, Integer.parseInt(mapaClasse.get("idClasse")));
+            Moderador moderador = (Moderador) dao.busca(Moderador.class, Integer.parseInt(mapaClasse.get("moderador")));
+            Tipo tipo = (Tipo) dao.busca(Tipo.class, Integer.parseInt(mapaClasse.get("tipo")));
+            Caracteristica caracteristica = (Caracteristica) dao.busca(Caracteristica.class, Integer.parseInt(mapaClasse.get("caracteristica")));
             atributos.setCaracteristica(caracteristica);
             atributos.setClasse(classe);
             atributos.setModerador(moderador);
