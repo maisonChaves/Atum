@@ -23,8 +23,8 @@ public class TesteGerarDao {
     public static void main(String[] args) {
         Session session = Conexao.getConexao();
         DAO dao = new DAO(session);
-        Classe classe = (Classe) dao.busca(Classe.class, 1);
-        File diretorio = new File("C:\\Users\\GCI\\Documents\\NetBeansProjects\\rborges~subversion\\rborges~subversion\\TesteRodrigo&Ian\\src\\java\\gerador");
+        Classe classe = (Classe) dao.busca(Classe.class, 2);
+        File diretorio = new File("E:\\Atum\\Atum\\src\\java\\gerador");
         boolean statusDiretorio = diretorio.isDirectory();
         System.out.println(statusDiretorio);
         File arquivo = new File(diretorio, classe.getNomeClasse() + "DAO.java");
