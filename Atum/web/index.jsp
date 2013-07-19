@@ -5,11 +5,13 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="tag" tagdir="/WEB-INF/tags/" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="css/jquery.ui.all.css">
         <title>JSP Page</title>
     </head>
     <body>
@@ -23,6 +25,9 @@
                 <fieldset>
                     <legend>Cadastro de Tela</legend>
                     <br>
+                    <tag:inputNum name="num" label="Numero"/>
+                    <tag:inputMoney name="money" label="Valor" decimal="," milhar="." simbolo="R$"/>
+                    <tag:inputDate name="date" label="Data"/>
                     <label for="id">Id:</label>
                     <input type="text" id="id" name="id" style="width: 30px">
                     <br><br>
@@ -91,18 +96,29 @@
                     <label for="scriptTabela">Script Tabela</label>
                     <input type="checkbox" id="scriptTabela" name="scriptTabela">
                 </fieldset>
+                <input type="texte" id="teste">
             </div>
         </form>
     </body>
     <script src="js/jquery.js"></script>
-    <script type="text/javascript">
+    <script src="js/jquery.maskMoney.js"></script>
+    <script src="js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script src="js/culture/jquery.ui.datepicker-pt-BR.js"></script>
+    <script src="js/InputMask.js"></script>
+    <script src="js/JavaScriptUtil.js"></script>
+    <script src="js/Parsers.js"></script>
 
+    <script type="text/javascript">
+                        $(function() {
+                            $.datepicker.setDefaults($.datepicker.regional[ "pt-BR" ]);
+                            $("#teste").datepicker();
+                        });
                         function enviaTela() {
                             var nomeClasse, moderador, tabela;
                             nomeClasse = $("#nomeClasse").val();
                             moderador = $("#moderadorClase").val();
                             tabela = $("#tabela").val();
-                            
+
                             if (nomeClasse == "") {
                                 alert("Preencha o nome da classe.");
                                 return;
