@@ -25,7 +25,7 @@ public class TesteGerar {
     public static void main(String[] args) {
         Session session = Conexao.getConexao();
         DAO dao = new DAO(session);
-        Classe classe = (Classe) dao.busca(Classe.class, 2);
+        Classe classe = (Classe) dao.busca(Classe.class, 6);
         File diretorio = new File("E:\\Atum\\Atum\\src\\java\\gerador");
         boolean statusDiretorio = diretorio.isDirectory();
         System.out.println(statusDiretorio);
@@ -79,7 +79,7 @@ public class TesteGerar {
     public static String getSet(List<Atributos> listaAtributos) {
         StringBuilder getSet = new StringBuilder();
         for (Atributos item : listaAtributos) {
-            if (item.getModerador().getId().equals(Parametros.PRIVADO)) {
+            if (item.getModerador().getId().equals(Parametros.PRIVATE) && !item.getModerador().getId().equals(Parametros.PROTECTED)) {
                 getSet.append("public ").append(item.getTipo().getDescricao()).append(" get").append(passaPrimeiraMaisculo(item.getNome())).append("(){\n");
                 getSet.append("return ").append(item.getNome()).append(";\n");
                 getSet.append("}\n");

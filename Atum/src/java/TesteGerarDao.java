@@ -3,6 +3,7 @@ import gerador.bean.Atributos;
 import gerador.bean.Classe;
 import gerador.dao.DAO;
 import gerador.utils.Conexao;
+import gerador.utils.Parametros;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -23,7 +24,7 @@ public class TesteGerarDao {
     public static void main(String[] args) {
         Session session = Conexao.getConexao();
         DAO dao = new DAO(session);
-        Classe classe = (Classe) dao.busca(Classe.class, 2);
+        Classe classe = (Classe) dao.busca(Classe.class, 6);
         File diretorio = new File("E:\\Atum\\Atum\\src\\java\\gerador");
         boolean statusDiretorio = diretorio.isDirectory();
         System.out.println(statusDiretorio);
@@ -56,15 +57,13 @@ public class TesteGerarDao {
             buffW.write("PreparedStatement pstmt;");
             buffW.newLine();
             String caracteres = "";
-            for (int i = 0; i < classe.getAtributos().size(); i++) {
-                if (i == classe.getAtributos().size() - 1) {
-                    caracteres += "?";
-                } else {
-                    caracteres += "?,";
+            for (Atributos item : classe.getAtributos()) {
+                if (!item.getModerador().getId().equals(Parametros.PROTECTED)) {
+                    caracteres += ",?";
                 }
             }
             buffW.write("StringBuilder sql = new StringBuilder();");
-            buffW.write("sql.append(\"INSERT INTO " + classe.getTabela() + " VALUES (" + caracteres + ")\");");
+            buffW.write("sql.append(\"INSERT INTO " + classe.getTabela() + " VALUES (" + caracteres.replaceFirst(",", "") + ")\");");
             buffW.newLine();
             buffW.write("try {");
             buffW.newLine();
@@ -72,9 +71,16 @@ public class TesteGerarDao {
             buffW.newLine();
             int count = 1;
             for (Atributos item : classe.getAtributos()) {
-                buffW.write(retornaTipoPstmt(item.getTipo().getDescricao()) + "(" + count + "," + classe.getNomeClasse().toLowerCase() + ".get" + item.getNome().substring(0, 1).toUpperCase().concat(item.getNome().substring(1)) + "());");
-                buffW.newLine();
-                count++;
+                if (!item.getModerador().getId().equals(Parametros.PROTECTED)) {
+                    if (item.getModerador().getId().equals(Parametros.PRIVATE)) {
+                        buffW.write(retornaTipoPstmt(item.getTipo().getDescricao()) + "(" + count + "," + classe.getNomeClasse().toLowerCase() + ".get" + item.getNome().substring(0, 1).toUpperCase().concat(item.getNome().substring(1)) + "());");
+                        buffW.newLine();
+                    } else {
+                        buffW.write(retornaTipoPstmt(item.getTipo().getDescricao()) + "(" + count + "," + classe.getNomeClasse().toLowerCase() + "." + item.getNome() + ");");
+                        buffW.newLine();
+                    }
+                    count++;
+                }
             }
             buffW.write("pstmt.execute();");
             buffW.newLine();
@@ -92,7 +98,7 @@ public class TesteGerarDao {
             buffW.newLine();
             buffW.write("ResultSet rs;");
             buffW.newLine();
-            buffW.write("List<" + classe.getNomeClasse() + "> lista" + classe.getNomeClasse() + " = new ArrayList<"+ classe.getNomeClasse() +">();");
+            buffW.write("List<" + classe.getNomeClasse() + "> lista" + classe.getNomeClasse() + " = new ArrayList<" + classe.getNomeClasse() + ">();");
             buffW.newLine();
             buffW.write("StringBuilder sql = new StringBuilder();");
             buffW.newLine();
@@ -109,10 +115,17 @@ public class TesteGerarDao {
             buffW.write(classe.getNomeClasse() + " " + classe.getNomeClasse().toLowerCase() + "= new " + classe.getNomeClasse() + "();");
             buffW.newLine();
             for (Atributos item : classe.getAtributos()) {
-                buffW.write(classe.getNomeClasse().toLowerCase() + ".set" + item.getNome().substring(0, 1).toUpperCase().concat(item.getNome().substring(1)) + "(" + retornaTipoRs(item.getTipo().getDescricao()) + "(\""+item.getNome().toLowerCase()+"\"));");
-                buffW.newLine();
+                if (!item.getModerador().getId().equals(Parametros.PROTECTED)) {
+                    if (item.getModerador().getId().equals(Parametros.PRIVATE)) {
+                        buffW.write(classe.getNomeClasse().toLowerCase() + ".set" + item.getNome().substring(0, 1).toUpperCase().concat(item.getNome().substring(1)) + "(" + retornaTipoRs(item.getTipo().getDescricao()) + "(\"" + item.getNome().toLowerCase() + "\"));");
+                        buffW.newLine();
+                    } else {
+                        buffW.write(classe.getNomeClasse().toLowerCase() + "." + item.getNome() + " = " + retornaTipoRs(item.getTipo().getDescricao()) + "(\"" + item.getNome().toLowerCase() + "\");");
+                        buffW.newLine();
+                    }
+                }
             }
-            buffW.write("lista" + classe.getNomeClasse()+".add("+classe.getNomeClasse().toLowerCase()+");");
+            buffW.write("lista" + classe.getNomeClasse() + ".add(" + classe.getNomeClasse().toLowerCase() + ");");
             buffW.newLine();
             buffW.write("}");
             buffW.newLine();
@@ -155,8 +168,8 @@ public class TesteGerarDao {
         }
         return "";
     }
-    
-    public static String geraImports(){
+
+    public static String geraImports() {
         StringBuilder imports = new StringBuilder();
         imports.append("import java.io.Serializable;\n");
         imports.append("import java.sql.Connection;\n");

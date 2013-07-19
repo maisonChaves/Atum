@@ -11,6 +11,7 @@ import gerador.bean.Moderador;
 import gerador.bean.Tipo;
 import gerador.dao.DAO;
 import gerador.utils.Conexao;
+import gerador.utils.Parametros;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.criterion.Restrictions;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -65,15 +68,24 @@ public class ServletCadastroTela extends HttpServlet {
     public void processaTela(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Session session = Conexao.getConexao();
         DAO dao = new DAO(session);
-        Criteria criteriaModerador = session.createCriteria(Moderador.class);
+        Criteria criteriaModeradorClasse = session.createCriteria(Moderador.class);
+        Criteria criteriaModeradorAtributos = session.createCriteria(Moderador.class);
         Criteria criteriaTipo = session.createCriteria(Tipo.class);
         Criteria criteriaCaracteristica = session.createCriteria(Caracteristica.class);
-        List<Moderador> listaModerador = dao.buscaCriteria(criteriaModerador);
+        
+        criteriaModeradorClasse.add(Restrictions.in("id", listaModificadoresClasse()));
+        criteriaModeradorAtributos.add(Restrictions.in("id", listaModificadoresAtributos()));
+        
+        List<Moderador> listaModeradorClasse = dao.buscaCriteria(criteriaModeradorClasse);
+        List<Moderador> listaModeradorAtributo = dao.buscaCriteria(criteriaModeradorAtributos);
         List<Tipo> listaTipo = dao.buscaCriteria(criteriaTipo);
         List<Caracteristica> listaCaracteristicas = dao.buscaCriteria(criteriaCaracteristica);
-        request.setAttribute("listaModerador", listaModerador);
+        
+        request.setAttribute("listaModeradorClasse", listaModeradorClasse);
         request.setAttribute("listaTipo", listaTipo);
         request.setAttribute("listaCaracteristica", listaCaracteristicas);
+        request.setAttribute("criteriaModeradorAtributos", listaModeradorAtributo);
+        
         ServletContext sc = getServletContext();
         RequestDispatcher rd = sc.getRequestDispatcher("/index.jsp");
         rd.forward(request, response);
@@ -127,5 +139,19 @@ public class ServletCadastroTela extends HttpServlet {
         }
         out.print(retorno);
         out.close();
+    }
+
+    public List<Integer> listaModificadoresClasse() {
+        List<Integer> listaModificadoresClasse = new ArrayList<Integer>();
+        listaModificadoresClasse.add(Parametros.DEFAULT);
+        listaModificadoresClasse.add(Parametros.PUBLIC);
+        return listaModificadoresClasse;
+    }
+    public List<Integer> listaModificadoresAtributos() {
+        List<Integer> listaModificadoresAtributos = new ArrayList<Integer>();
+        listaModificadoresAtributos.add(Parametros.PUBLIC);
+        listaModificadoresAtributos.add(Parametros.PRIVATE);
+        listaModificadoresAtributos.add(Parametros.PROTECTED);
+        return listaModificadoresAtributos;
     }
 }
