@@ -15,6 +15,7 @@ import gerador.utils.Parametros;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.RequestDispatcher;
@@ -72,20 +73,19 @@ public class ServletCadastroTela extends HttpServlet {
         Criteria criteriaModeradorAtributos = session.createCriteria(Moderador.class);
         Criteria criteriaTipo = session.createCriteria(Tipo.class);
         Criteria criteriaCaracteristica = session.createCriteria(Caracteristica.class);
-        
+
         criteriaModeradorClasse.add(Restrictions.in("id", listaModificadoresClasse()));
         criteriaModeradorAtributos.add(Restrictions.in("id", listaModificadoresAtributos()));
-        
+
         List<Moderador> listaModeradorClasse = dao.buscaCriteria(criteriaModeradorClasse);
         List<Moderador> listaModeradorAtributo = dao.buscaCriteria(criteriaModeradorAtributos);
         List<Tipo> listaTipo = dao.buscaCriteria(criteriaTipo);
         List<Caracteristica> listaCaracteristicas = dao.buscaCriteria(criteriaCaracteristica);
-        
         request.setAttribute("listaModeradorClasse", listaModeradorClasse);
         request.setAttribute("listaTipo", listaTipo);
         request.setAttribute("listaCaracteristica", listaCaracteristicas);
         request.setAttribute("criteriaModeradorAtributos", listaModeradorAtributo);
-        
+
         ServletContext sc = getServletContext();
         RequestDispatcher rd = sc.getRequestDispatcher("/index.jsp");
         rd.forward(request, response);
@@ -147,6 +147,7 @@ public class ServletCadastroTela extends HttpServlet {
         listaModificadoresClasse.add(Parametros.PUBLIC);
         return listaModificadoresClasse;
     }
+
     public List<Integer> listaModificadoresAtributos() {
         List<Integer> listaModificadoresAtributos = new ArrayList<Integer>();
         listaModificadoresAtributos.add(Parametros.PUBLIC);

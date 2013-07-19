@@ -20,4 +20,14 @@ public class Parametros {
     public static final Integer DOUBLE = 4;
     public static final Integer FLOAT = 5;
     public static final Integer BOOLEAN = 6;
+    public static final Integer INPUT_MONETARIO = 1;
+    public static final Integer INPUT_DATA = 2;
+    public static final Integer INPUT_NUMERICO = 3;
+    public static final Integer INPUT_EMAIL = 4;
+    public static final Integer INPUT_TEL_FIXO = 5;
+    public static final Integer INPUT_CEL = 6;
+    public static final Integer INPUT_CPF = 7;
+    public static final Integer INPUT_CNPJ = 8;
+    public static final Integer INPUT_CPF_CNPJ = 9;
+    public static final Integer INPUT_TEXT = 10;
 }

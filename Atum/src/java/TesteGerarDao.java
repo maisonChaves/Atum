@@ -4,6 +4,7 @@ import gerador.bean.Classe;
 import gerador.dao.DAO;
 import gerador.utils.Conexao;
 import gerador.utils.Parametros;
+import gerador.utils.Utils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -24,7 +25,7 @@ public class TesteGerarDao {
     public static void main(String[] args) {
         Session session = Conexao.getConexao();
         DAO dao = new DAO(session);
-        Classe classe = (Classe) dao.busca(Classe.class, 7);
+        Classe classe = (Classe) dao.busca(Classe.class, 10);
         File diretorio = new File("E:\\Atum\\Atum\\src\\java\\gerador");
         boolean statusDiretorio = diretorio.isDirectory();
         System.out.println(statusDiretorio);
@@ -43,7 +44,7 @@ public class TesteGerarDao {
             buffW.newLine();
             buffW.write(classe.getModerador().getDescricao() + " class " + classe.getNomeClasse() + "DAO implements Serializable{");
             buffW.newLine();
-            buffW.write("private static final long serialVersionUID = 1L;");
+            buffW.write(Utils.serialVersion());
             buffW.newLine();
             buffW.write("protected Connection connection;");
             buffW.newLine();
@@ -74,18 +75,18 @@ public class TesteGerarDao {
                 if (!item.getModerador().getId().equals(Parametros.PROTECTED)) {
                     if (item.getModerador().getId().equals(Parametros.PRIVATE)) {
                         if (item.getTipo().getId().equals(Parametros.DATE)) {
-                            buffW.write(retornaTipoPstmt(item.getTipo().getDescricao()) + "(" + count + ", new java.sql.Date(" + classe.getNomeClasse().toLowerCase() + ".get" + item.getNome().substring(0, 1).toUpperCase().concat(item.getNome().substring(1)) + "().getTime()));");
+                            buffW.write(Utils.retornaTipoPstmt(item.getTipo().getDescricao()) + "(" + count + ", new java.sql.Date(" + classe.getNomeClasse().toLowerCase() + ".get" + item.getNome().substring(0, 1).toUpperCase().concat(item.getNome().substring(1)) + "().getTime()));");
                             buffW.newLine();
                         } else {
-                            buffW.write(retornaTipoPstmt(item.getTipo().getDescricao()) + "(" + count + "," + classe.getNomeClasse().toLowerCase() + ".get" + item.getNome().substring(0, 1).toUpperCase().concat(item.getNome().substring(1)) + "());");
+                            buffW.write(Utils.retornaTipoPstmt(item.getTipo().getDescricao()) + "(" + count + "," + classe.getNomeClasse().toLowerCase() + ".get" + item.getNome().substring(0, 1).toUpperCase().concat(item.getNome().substring(1)) + "());");
                             buffW.newLine();
                         }
                     } else {
                         if (item.getTipo().getId().equals(Parametros.DATE)) {
-                            buffW.write(retornaTipoPstmt(item.getTipo().getDescricao()) + "(" + count + ",new java.sql.Date(" + classe.getNomeClasse().toLowerCase() + "." + item.getNome() + ".getTime()));");
+                            buffW.write(Utils.retornaTipoPstmt(item.getTipo().getDescricao()) + "(" + count + ",new java.sql.Date(" + classe.getNomeClasse().toLowerCase() + "." + item.getNome() + ".getTime()));");
                             buffW.newLine();
                         } else {
-                            buffW.write(retornaTipoPstmt(item.getTipo().getDescricao()) + "(" + count + "," + classe.getNomeClasse().toLowerCase() + "." + item.getNome() + ");");
+                            buffW.write(Utils.retornaTipoPstmt(item.getTipo().getDescricao()) + "(" + count + "," + classe.getNomeClasse().toLowerCase() + "." + item.getNome() + ");");
                             buffW.newLine();
                         }
                     }
@@ -127,10 +128,10 @@ public class TesteGerarDao {
             for (Atributos item : classe.getAtributos()) {
                 if (!item.getModerador().getId().equals(Parametros.PROTECTED)) {
                     if (item.getModerador().getId().equals(Parametros.PRIVATE)) {
-                        buffW.write(classe.getNomeClasse().toLowerCase() + ".set" + item.getNome().substring(0, 1).toUpperCase().concat(item.getNome().substring(1)) + "(" + retornaTipoRs(item.getTipo().getDescricao()) + "(\"" + item.getNome().toLowerCase() + "\"));");
+                        buffW.write(classe.getNomeClasse().toLowerCase() + ".set" + item.getNome().substring(0, 1).toUpperCase().concat(item.getNome().substring(1)) + "(" + Utils.retornaTipoRs(item.getTipo().getDescricao()) + "(\"" + item.getNome().toLowerCase() + "\"));");
                         buffW.newLine();
                     } else {
-                        buffW.write(classe.getNomeClasse().toLowerCase() + "." + item.getNome() + " = " + retornaTipoRs(item.getTipo().getDescricao()) + "(\"" + item.getNome() + "\");");
+                        buffW.write(classe.getNomeClasse().toLowerCase() + "." + item.getNome() + " = " + Utils.retornaTipoRs(item.getTipo().getDescricao()) + "(\"" + item.getNome() + "\");");
                         buffW.newLine();
                     }
                 }
@@ -159,28 +160,6 @@ public class TesteGerarDao {
                     "Classe Gerada");
         } catch (Exception e) {
         }
-    }
-
-    public static String retornaTipoPstmt(String tipo) {
-        if (tipo.equals("String")) {
-            return "pstmt.setString";
-        } else if (tipo.equals("Integer")) {
-            return "pstmt.setInt";
-        } else if (tipo.equals("Date")) {
-            return "pstmt.setDate";
-        }
-        return "";
-    }
-
-    public static String retornaTipoRs(String tipo) {
-        if (tipo.equals("String")) {
-            return "rs.getString";
-        } else if (tipo.equals("Integer")) {
-            return "rs.getInt";
-        } else if (tipo.equals("Date")) {
-            return "rs.getDate";
-        }
-        return "";
     }
 
     public static String geraImports() {

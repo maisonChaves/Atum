@@ -4,6 +4,7 @@ import gerador.bean.Classe;
 import gerador.dao.DAO;
 import gerador.utils.Conexao;
 import gerador.utils.Parametros;
+import gerador.utils.Utils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,7 +26,7 @@ public class TesteGerar {
     public static void main(String[] args) {
         Session session = Conexao.getConexao();
         DAO dao = new DAO(session);
-        Classe classe = (Classe) dao.busca(Classe.class, 7);
+        Classe classe = (Classe) dao.busca(Classe.class, 10);
         File diretorio = new File("E:\\Atum\\Atum\\src\\java\\gerador");
         boolean statusDiretorio = diretorio.isDirectory();
         System.out.println(statusDiretorio);
@@ -44,7 +45,7 @@ public class TesteGerar {
             buffW.newLine();
             buffW.write(classe.getModerador().getDescricao() + " class " + classe.getNomeClasse() + " implements Serializable{");
             buffW.newLine();
-            buffW.write(serialVersion());
+            buffW.write(Utils.serialVersion());
             buffW.newLine();
             for (Atributos item : classe.getAtributos()) {
                 buffW.write(item.getModerador().getDescricao() + " " + item.getTipo().getDescricao() + " " + item.getNome() + ";");
@@ -63,6 +64,7 @@ public class TesteGerar {
     public static String imports() {
         StringBuilder imports = new StringBuilder();
         imports.append("import java.io.Serializable;");
+        imports.append("import java.sql.Date;");
         return imports.toString();
     }
 
@@ -72,26 +74,18 @@ public class TesteGerar {
         return pacote.toString();
     }
 
-    public static String serialVersion() {
-        return "private static final long serialVersionUID = 1L;";
-    }
-
     public static String getSet(List<Atributos> listaAtributos) {
         StringBuilder getSet = new StringBuilder();
         for (Atributos item : listaAtributos) {
             if (item.getModerador().getId().equals(Parametros.PRIVATE) && !item.getModerador().getId().equals(Parametros.PROTECTED)) {
-                getSet.append("public ").append(item.getTipo().getDescricao()).append(" get").append(passaPrimeiraMaisculo(item.getNome())).append("(){\n");
+                getSet.append("public ").append(item.getTipo().getDescricao()).append(" get").append(Utils.passaPrimeiraMaisculo(item.getNome())).append("(){\n");
                 getSet.append("return ").append(item.getNome()).append(";\n");
                 getSet.append("}\n");
-                getSet.append("public void set").append(passaPrimeiraMaisculo(item.getNome())).append("(").append(item.getTipo().getDescricao()).append(" ").append(item.getNome()).append("){\n");
+                getSet.append("public void set").append(Utils.passaPrimeiraMaisculo(item.getNome())).append("(").append(item.getTipo().getDescricao()).append(" ").append(item.getNome()).append("){\n");
                 getSet.append("this.").append(item.getNome()).append("=").append(item.getNome()).append(";\n");
                 getSet.append("}\n");
             }
         }
         return getSet.toString();
-    }
-
-    public static String passaPrimeiraMaisculo(String texto) {
-        return texto.substring(0, 1).toUpperCase().concat(texto.substring(1));
     }
 }
