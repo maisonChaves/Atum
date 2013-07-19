@@ -25,7 +25,7 @@ public class TesteGerar {
     public static void main(String[] args) {
         Session session = Conexao.getConexao();
         DAO dao = new DAO(session);
-        Classe classe = (Classe) dao.busca(Classe.class, 6);
+        Classe classe = (Classe) dao.busca(Classe.class, 7);
         File diretorio = new File("E:\\Atum\\Atum\\src\\java\\gerador");
         boolean statusDiretorio = diretorio.isDirectory();
         System.out.println(statusDiretorio);

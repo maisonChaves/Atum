@@ -25,17 +25,14 @@
                 <fieldset>
                     <legend>Cadastro de Tela</legend>
                     <br>
-                    <tag:inputNum name="num" label="Numero"/>
-                    <tag:inputMoney name="money" label="Valor" decimal="," milhar="." simbolo="R$"/>
-                    <tag:inputDate name="date" label="Data"/>
                     <label for="id">Id:</label>
                     <input type="text" id="id" name="id" style="width: 30px">
                     <br><br>
                     <label for="nomeClasse">Nome da Classe:</label>
                     <input id="nomeClasse" name="nomeClasse" style="padding-right: 20px">
-                    <label for="moderador">Moderador:</label>
+                    <label for="moderador">Modificador:</label>
                     <select id="moderador" name="moderador">
-                        <c:forEach items="${listaModerador}" var="moderador">
+                        <c:forEach items="${listaModeradorClasse}" var="moderador">
                             <option value="${moderador.id}">${moderador.descricao}</option>
                         </c:forEach>
                     </select>
@@ -54,7 +51,7 @@
                     <br><br>
                     <label for="moderadorAtributo">Moderador:</label>
                     <select id="moderadorAtributo" name="moderadorAtributo">
-                        <c:forEach items="${listaModerador}" var="moderador">
+                        <c:forEach items="${criteriaModeradorAtributos}" var="moderador">
                             <option value="${moderador.id}">${moderador.descricao}</option>
                         </c:forEach>
                     </select>
@@ -96,7 +93,6 @@
                     <label for="scriptTabela">Script Tabela</label>
                     <input type="checkbox" id="scriptTabela" name="scriptTabela">
                 </fieldset>
-                <input type="texte" id="teste">
             </div>
         </form>
     </body>
@@ -109,10 +105,6 @@
     <script src="js/Parsers.js"></script>
 
     <script type="text/javascript">
-                        $(function() {
-                            $.datepicker.setDefaults($.datepicker.regional[ "pt-BR" ]);
-                            $("#teste").datepicker();
-                        });
                         function enviaTela() {
                             var nomeClasse, moderador, tabela;
                             nomeClasse = $("#nomeClasse").val();

@@ -16,4 +16,8 @@ public class Parametros {
     public static final Integer PROTECTED = 4;
     public static final Integer STRING = 1;
     public static final Integer INTEGER = 2;
+    public static final Integer DATE = 3;
+    public static final Integer DOUBLE = 4;
+    public static final Integer FLOAT = 5;
+    public static final Integer BOOLEAN = 6;
 }
