@@ -92,7 +92,7 @@ public class TesteGerarDao {
             buffW.newLine();
             buffW.write("ResultSet rs;");
             buffW.newLine();
-            buffW.write("List<" + classe.getNomeClasse() + "> lista" + classe.getNomeClasse() + " = new ArrayList<Pessoa>();");
+            buffW.write("List<" + classe.getNomeClasse() + "> lista" + classe.getNomeClasse() + " = new ArrayList<"+ classe.getNomeClasse() +">();");
             buffW.newLine();
             buffW.write("StringBuilder sql = new StringBuilder();");
             buffW.newLine();

@@ -80,11 +80,11 @@ public class TesteGerar {
         StringBuilder getSet = new StringBuilder();
         for (Atributos item : listaAtributos) {
             if (item.getModerador().getId().equals(Parametros.PRIVADO)) {
-                getSet.append("public " + item.getTipo().getDescricao() + " get" + passaPrimeiraMaisculo(item.getNome()) + "(){\n");
-                getSet.append("return " + item.getNome() + ";\n");
+                getSet.append("public ").append(item.getTipo().getDescricao()).append(" get").append(passaPrimeiraMaisculo(item.getNome())).append("(){\n");
+                getSet.append("return ").append(item.getNome()).append(";\n");
                 getSet.append("}\n");
-                getSet.append("public void set" + passaPrimeiraMaisculo(item.getNome()) + "(" + item.getTipo().getDescricao() + " " + item.getNome() + "){\n");
-                getSet.append("this." + item.getNome() + "=" + item.getNome() + ";\n");
+                getSet.append("public void set").append(passaPrimeiraMaisculo(item.getNome())).append("(").append(item.getTipo().getDescricao()).append(" ").append(item.getNome()).append("){\n");
+                getSet.append("this.").append(item.getNome()).append("=").append(item.getNome()).append(";\n");
                 getSet.append("}\n");
             }
         }
