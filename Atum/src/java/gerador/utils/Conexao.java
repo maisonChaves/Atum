@@ -14,10 +14,9 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class Conexao {
 
-    protected static SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
 
     public static Session getConexao() {
-        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
         return sessionFactory.openSession();
     }
 
@@ -26,9 +25,6 @@ public class Conexao {
             session.close();
             session.clear();
             session.flush();
-            if (!sessionFactory.isClosed()) {
-                sessionFactory.close();
-            }
         }
     }
 }
