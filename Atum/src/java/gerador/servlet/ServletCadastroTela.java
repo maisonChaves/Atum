@@ -37,7 +37,7 @@ import org.json.simple.JSONValue;
  *
  * @author GCI
  */
-@WebServlet(name = "ServletCadastroTeça", urlPatterns = {"/cadastroTela", "/gravarClasse", "/gravarAtributos"})
+@WebServlet(name = "ServletCadastroTeça", urlPatterns = {"/cadastroTela", "/gravarClasse", "/gravarAtributos", "listaClasses"})
 public class ServletCadastroTela extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -51,6 +51,8 @@ public class ServletCadastroTela extends HttpServlet {
             gravaClasse(request, response);
         } else if (request.getRequestURI().contains("gravarAtributos")) {
             gravaAtributo(request, response);
+        } else if (request.getRequestURI().contains("listaClasses")) {
+            listaClasse(request, response);
         }
     }
 
@@ -63,7 +65,20 @@ public class ServletCadastroTela extends HttpServlet {
             gravaClasse(request, response);
         } else if (request.getRequestURI().contains("gravarAtributos")) {
             gravaAtributo(request, response);
+        } else if (request.getRequestURI().contains("listaClasses")) {
+            listaClasse(request, response);
         }
+    }
+
+    public void listaClasse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Session session = Conexao.getConexao();
+        DAO dao = new DAO(session);
+        List<Classe> listaClasse = dao.buscaCriteria(session.createCriteria(Classe.class));
+        request.setAttribute("listaClasse", listaClasse);
+        ServletContext sc = getServletContext();
+        RequestDispatcher rd = sc.getRequestDispatcher("/listaClasses");
+        rd.forward(request, response);
+        Conexao.fechaSessao(session);
     }
 
     public void processaTela(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

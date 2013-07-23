@@ -14,7 +14,7 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class Conexao {
 
-    private static SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+    private static final SessionFactory sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
 
     public static Session getConexao() {
         return sessionFactory.openSession();
